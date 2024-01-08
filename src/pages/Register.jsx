@@ -1,5 +1,6 @@
 import React from "react";
 import "../style.scss";
+import Add from "../img/addImg.png";
 
 const Register = () => {
   return (
@@ -11,7 +12,15 @@ const Register = () => {
           <input type="text" placeholder="Username" />
           <input type="email" placeholder="Email" />
           <input type="password" placeholder="Password" />
-          <input type="file" placeholder="inputfile" />
+          <input
+            style={{ display: "none" }}
+            type="file"
+            placeholder="inputfile"
+          />
+          <label htmlFor="file">
+            <img src={Add} alt="" />
+            <span>Add an Avatar</span>
+          </label>
           <button>Sign Up</button>
         </form>
         <p>You do have an Account? Login</p>
