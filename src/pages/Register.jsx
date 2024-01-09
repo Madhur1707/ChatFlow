@@ -9,7 +9,7 @@ const Register = () => {
         <span className="logo"> ChatFlow</span>
         <span className="title">Register</span>
         <form>
-          <input type="text" placeholder="Username" />
+          <input type="text" placeholder="Username" /> 
           <input type="email" placeholder="Email" />
           <input type="password" placeholder="Password" />
           <input
