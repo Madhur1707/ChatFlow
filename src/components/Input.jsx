@@ -1,21 +1,9 @@
-import React from "react";
-import addImg from "../img/addImg.png";
-import Attach from "../img/Attach.png";
+import React from 'react'
 
 const Input = () => {
   return (
-    <div className="input">
-      <input type="text" placeholder="Type something..." />
-      <div className="send">
-        <img src={Attach} alt="" />
-        <input type="file" style={{ display: "none" }} id="file" />
-        <label htmlFor="file">
-          <img src={addImg} alt="" />
-        </label>
-        <button>Send</button>
-      </div>
-    </div>
-  );
-};
+    <div>Input</div>
+  )
+}
 
-export default Input;
+export default Input
