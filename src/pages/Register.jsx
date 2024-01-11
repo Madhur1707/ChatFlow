@@ -1,30 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import "../style.scss";
 import Add from "../img/addImg.png";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth, storage } from "../firebase";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const Register = () => {
-  const handleSubmit = (e) => {
+  const [err, setErr] = useState(false);
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const userName = e.target[0].value;
     const email = e.target[1].value;
     const password = e.target[2].value;
-    const inputFile = e.target[3].files[0];
+    const file = e.target[3].files[0];
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user;
-        console.log(user);
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-      });
+    try {
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+
+      const storageRef = ref(storage, userName);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on(
+        (error) => {
+          setErr(true);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+            await updateProfile(res.user, {
+              userName,
+              photoURL: downloadURL,
+            });
+          });
+        }
+      );
+    } catch (err) {
+      setErr(true);
+    }
   };
 
   return (
@@ -46,6 +58,7 @@ const Register = () => {
             <span>Add an Avatar</span>
           </label>
           <button>Sign Up</button>
+          {err && <span>Somthing went Wrong...</span>}
         </form>
         <p>You do have an Account? Login</p>
       </div>
